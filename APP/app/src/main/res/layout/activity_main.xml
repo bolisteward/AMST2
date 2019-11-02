@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFondo"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="423dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/welcome_to_sky_app"
+        android:textColor="@color/colorWhite"
+        android:textSize="25sp"
+        android:textStyle="italic" />
+
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/universe" />
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/floatingActionMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:menu_fab_label="Menu">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fab_label="Lineal Graph"
+            app:fab_colorNormal="@color/colorGreen"
+            android:src="@drawable/ic_graficolineal"
+            android:onClick="graficoLineal">
+
+        </com.github.clans.fab.FloatingActionButton>
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+
+</RelativeLayout>
