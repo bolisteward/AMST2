@@ -3,7 +3,9 @@ package com.example.amst2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.juang.jplot.PlotPlanitoXY;
@@ -54,5 +56,10 @@ public class LinealGraph extends AppCompatActivity {
         plot.SetTouch(true);// activa el touch sobre el grafico no es necesario colocarlo ya que por default esta activado
 
         pantalla.addView(plot);
+    }
+
+    public void playVideo(View view){
+        Intent intent = new Intent(this,videoView.class);
+        startActivity(intent);
     }
 }

@@ -16,9 +16,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void playVideo(View view){
+        Intent intent = new Intent(this,videoView.class);
+        startActivity(intent);
+    }
+
 
     public void graficoLineal(View view){
         Intent intent = new Intent(this,LinealGraph.class);
         startActivity(intent);
     }
+
 }
