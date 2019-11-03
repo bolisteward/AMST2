@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -10,5 +11,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".myMap" />
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/floatingActionMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:menu_fab_label="Menu">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fab_label="Lineal Graph"
+            app:fab_colorNormal="@color/colorGreen"
+            android:src="@drawable/ic_graficolineal"
+            android:onClick="graficoLineal">
+
+        </com.github.clans.fab.FloatingActionButton>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fab_label="Play video"
+            app:fab_colorNormal="@color/colorRed"
+            android:src="@drawable/ic_videoplayer"
+            android:onClick="playVideo">
+
+        </com.github.clans.fab.FloatingActionButton>
+
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </RelativeLayout>

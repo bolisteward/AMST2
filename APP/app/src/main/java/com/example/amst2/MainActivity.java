@@ -22,9 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(isServiceOk()){
-            init();
-        }
+
     }
     public void playVideo(View view){
         Intent intent = new Intent(this,videoView.class);
@@ -37,8 +35,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void init(){
-
+    public void verMap(View view){
+        if(isServiceOk()){
+            Intent intent = new Intent(this,myMap.class);
+            startActivity(intent);
+        }
     }
 
     public boolean isServiceOk(){
