@@ -62,4 +62,11 @@ public class LinealGraph extends AppCompatActivity {
         Intent intent = new Intent(this,videoView.class);
         startActivity(intent);
     }
+    public void verMap(View view){
+        MainActivity main = new MainActivity();
+        if(main.isServiceOk()){
+            Intent intent = new Intent(this,myMap.class);
+            startActivity(intent);
+        }
+    }
 }

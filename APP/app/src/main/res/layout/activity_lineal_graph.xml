@@ -30,6 +30,16 @@
 
         </com.github.clans.fab.FloatingActionButton>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fab_label="MAP"
+            app:fab_colorNormal="@color/colorBlue"
+            android:src="@drawable/ic_map"
+            android:onClick="verMap">
+
+        </com.github.clans.fab.FloatingActionButton>
+
     </com.github.clans.fab.FloatingActionMenu>
 
 

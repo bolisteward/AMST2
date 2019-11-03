@@ -82,5 +82,12 @@ public class videoView extends AppCompatActivity {
         Intent intent = new Intent(this,LinealGraph.class);
         startActivity(intent);
     }
+    public void verMap(View view){
+        MainActivity main = new MainActivity();
+        if(main.isServiceOk()){
+            Intent intent = new Intent(this,myMap.class);
+            startActivity(intent);
+        }
+    }
 
 }

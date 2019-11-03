@@ -8,38 +8,48 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class myMap extends FragmentActivity implements OnMapReadyCallback {
 
-    private static final String TAG = "message";
+    private static final String TAG = "myMap";
     private GoogleMap mMap;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private static final float DEFAULT_ZOOM = 15F;
+
     //vars
     private boolean mLocationPermissionGaranted = false;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_map);
+
         getLocationPermission();
-
-
     }
+
     public void playVideo(View view){
         Intent intent = new Intent(this,videoView.class);
         startActivity(intent);
@@ -51,13 +61,48 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
         startActivity(intent);
     }
 
+    private void getDeviceLocation(){
+        Log.d(TAG, "getDeviceLocation: getting the current device location");
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        try {
+            if (mLocationPermissionGaranted){
+                Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()){
+                            Log.d(TAG, "onComplete: found location!");
+                            Location currentLocation = (Location) task.getResult();
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                        }else{
+                            Log.d(TAG,"onComplete: current location is null!" );
+                            Toast.makeText(myMap.this, "Unable to get current", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+            }
+        }catch (SecurityException e){
+            Log.d(TAG, "getDeviceLocation: SecurityException"+e.getMessage());
+
+        }
+    }
+
+    private void moveCamera(LatLng latLng, float zoom){
+        Log.d(TAG, "moveCamera: moving yhe camera to lat: "+ latLng.latitude+ ", lng: " + latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
+    }
+
+
     private void initMap (){
         Log.d(TAG, "initMap: initializing map" );
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(myMap.this);
     }
+
 
 
     /**
@@ -75,10 +120,15 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
         Log.d(TAG, "onMapReady: ready");
         mMap = googleMap;
 
+        if (mLocationPermissionGaranted){
+            getDeviceLocation();
+            mMap.setMyLocationEnabled(true);
+        }
+
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //LatLng sydney = new LatLng(-34, 151);
+        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     private void getLocationPermission(){
@@ -89,9 +139,12 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     COURSE_LOCATION)== PackageManager.PERMISSION_GRANTED){
                 mLocationPermissionGaranted = true;
+                initMap();
             }else{
                 ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
             }
+        }else{
+            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -102,7 +155,7 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
         switch ( requestCode){
             case LOCATION_PERMISSION_REQUEST_CODE:{
                 if (grantResults.length >0){
-                    for (int i =0; i< grantResults.length; i++) {
+                    for (int i =0; i < grantResults.length; i++) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             mLocationPermissionGaranted = false;
                             Log.d(TAG, "onRequestPermissionsResult: failed.");
