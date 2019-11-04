@@ -63,6 +63,16 @@
 
         </com.github.clans.fab.FloatingActionButton>
 
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fab_label="calendario"
+            app:fab_colorNormal="@color/colorAccent"
+            android:src="@drawable/ic_agenda"
+            android:onClick="verCalendario">
+
+        </com.github.clans.fab.FloatingActionButton>
+
 
     </com.github.clans.fab.FloatingActionMenu>
 

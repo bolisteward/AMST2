@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,7 +41,7 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
 
     //vars
     private boolean mLocationPermissionGaranted = false;
-
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,39 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
     public void graficoLineal(View view){
         Intent intent = new Intent(this,LinealGraph.class);
         startActivity(intent);
+    }
+    public void verCalendario(View view){
+        Intent intent = new Intent(this,calendar.class);
+        startActivity(intent);
+    }
+
+    public void getDeviceLocation(){
+        Log.d(TAG, "getDeviceLocation: getting device current location");
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        try{
+            if(mLocationPermissionGaranted){
+
+                final Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "onComplete: found location!");
+                            Location currentLocation = (Location) task.getResult();
+
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
+                                    DEFAULT_ZOOM);
+
+                        }else{
+                            Log.d(TAG, "onComplete: current location is null");
+                            Toast.makeText(myMap.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }catch (SecurityException e){
+            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
+        }
     }
 
 
@@ -93,7 +128,7 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
         Log.d(TAG, "onMapReady: ready");
         mMap = googleMap;
 
-        /*if (mLocationPermissionGaranted){
+        if (mLocationPermissionGaranted){
             getDeviceLocation();
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
@@ -101,7 +136,7 @@ public class myMap extends FragmentActivity implements OnMapReadyCallback {
                 return;
             }
             mMap.setMyLocationEnabled(true);
-        }*/
+        }
 
         // Add a marker in Sydney and move the camera
         //LatLng sydney = new LatLng(-34, 151);

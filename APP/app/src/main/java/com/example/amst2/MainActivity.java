@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+    public void verCalendario(View view){
+        Intent intent = new Intent(this,calendar.class);
+        startActivity(intent);
+    }
+
 
     public boolean isServiceOk(){
         Log.d(TAG, "isServiceOk: checking google service version");

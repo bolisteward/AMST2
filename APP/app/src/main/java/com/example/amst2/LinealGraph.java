@@ -69,4 +69,8 @@ public class LinealGraph extends AppCompatActivity {
             startActivity(intent);
         }
     }
+    public void verCalendario(View view){
+        Intent intent = new Intent(this,calendar.class);
+        startActivity(intent);
+    }
 }
